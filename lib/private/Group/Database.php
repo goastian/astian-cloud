@@ -7,24 +7,25 @@
  */
 namespace OC\Group;
 
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\User\LazyUser;
-use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\IUserManager;
+use OCP\IDBConnection;
 use OCP\Group\Backend\ABackend;
-use OCP\Group\Backend\IAddToGroupBackend;
-use OCP\Group\Backend\IBatchMethodsBackend;
-use OCP\Group\Backend\ICountDisabledInGroup;
-use OCP\Group\Backend\ICountUsersBackend;
-use OCP\Group\Backend\ICreateNamedGroupBackend;
-use OCP\Group\Backend\IDeleteGroupBackend;
-use OCP\Group\Backend\IGetDisplayNameBackend;
-use OCP\Group\Backend\IGroupDetailsBackend;
 use OCP\Group\Backend\INamedBackend;
+use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Group\Backend\IAddToGroupBackend;
+use OCP\Group\Backend\ICountUsersBackend;
+use OCP\Group\Backend\IDeleteGroupBackend;
+use OC\Oauth2PassporServer\PassportService;
+use OCP\Group\Backend\IBatchMethodsBackend;
+use OCP\Group\Backend\IGroupDetailsBackend;
+use OCP\Group\Backend\ICountDisabledInGroup;
+use OCP\Group\Backend\IGetDisplayNameBackend;
+use OCP\Group\Backend\ISetDisplayNameBackend;
 use OCP\Group\Backend\IRemoveFromGroupBackend;
 use OCP\Group\Backend\ISearchableGroupBackend;
-use OCP\Group\Backend\ISetDisplayNameBackend;
-use OCP\IDBConnection;
-use OCP\IUserManager;
+use OCP\Group\Backend\ICreateNamedGroupBackend;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * Class for group management in a SQL Database (e.g. MySQL, SQLite)
@@ -201,7 +202,7 @@ class Database extends ABackend implements
 	 */
 	public function getUserGroups($uid) {
 		//guests has empty or null $uid
-		if ($uid === null || $uid === '') {
+		/*if ($uid === null || $uid === '') {
 			return [];
 		}
 
@@ -223,7 +224,29 @@ class Database extends ABackend implements
 				'displayname' => $row['displayname'],
 			];
 		}
-		$cursor->closeCursor();
+		$cursor->closeCursor();*/
+
+		$groups = [];
+
+		$passportService = new PassportService(
+			\OC::$server->get(\OCP\Http\Client\IClientService::class),
+			\OC::$server->get(\Psr\Log\LoggerInterface::class),
+			\OC::$server->get(\OCP\IConfig::class)
+		);
+
+		$passport = $passportService->get();
+
+		$user_scopes = $passport->scopes();
+
+		if (
+			count($user_scopes) &&
+			in_array(
+				$passport->adminScope(),
+				array_column($user_scopes, 'id')
+			)
+		) {
+			$groups[] = 'admin';
+		}
 
 		return $groups;
 	}
