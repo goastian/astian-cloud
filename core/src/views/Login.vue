@@ -5,6 +5,7 @@
 
 <template>
 	<div class="guest-box login-box">
+		<!--
 		<template v-if="!hideLoginForm || directLogin">
 			<transition name="fade" mode="out-in">
 				<div v-if="!passwordlessLogin && !resetPassword && resetPasswordTarget === ''" class="login-box__wrapper">
@@ -77,16 +78,21 @@
 					{{ t('core', 'The Nextcloud login form is disabled. Use another login option if available or contact your administration.') }}
 				</NcNoteCard>
 			</transition>
-		</template>
-
+		</template>		
+		-->
+		<h2 class="login-form__headline" data-login-form-headline>
+			{{ headlineText }}
+		</h2>
 		<div id="alternative-logins" class="login-box__alternative-logins">
-			<NcButton v-for="(alternativeLogin, index) in alternativeLogins"
+			<NcButton
+				v-for="(alternativeLogin, index) in alternativeLogins"
 				:key="index"
 				type="secondary"
 				:wide="true"
 				:class="[alternativeLogin.class]"
 				role="link"
-				:href="alternativeLogin.href">
+				:href="alternativeLogin.href"
+			>
 				{{ alternativeLogin.name }}
 			</NcButton>
 		</div>
@@ -94,26 +100,26 @@
 </template>
 
 <script>
-import { loadState } from '@nextcloud/initial-state'
-import { generateUrl } from '@nextcloud/router'
+import { loadState } from "@nextcloud/initial-state";
+import { generateUrl } from "@nextcloud/router";
 
-import queryString from 'query-string'
+import queryString from "query-string";
 
-import LoginForm from '../components/login/LoginForm.vue'
-import PasswordLessLoginForm from '../components/login/PasswordLessLoginForm.vue'
-import ResetPassword from '../components/login/ResetPassword.vue'
-import UpdatePassword from '../components/login/UpdatePassword.vue'
-import NcButton from '@nextcloud/vue/components/NcButton'
-import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
-import { wipeBrowserStorages } from '../utils/xhr-request.js'
+import LoginForm from "../components/login/LoginForm.vue";
+import PasswordLessLoginForm from "../components/login/PasswordLessLoginForm.vue";
+import ResetPassword from "../components/login/ResetPassword.vue";
+import UpdatePassword from "../components/login/UpdatePassword.vue";
+import NcButton from "@nextcloud/vue/components/NcButton";
+import NcNoteCard from "@nextcloud/vue/components/NcNoteCard";
+import { wipeBrowserStorages } from "../utils/xhr-request.js";
 
-const query = queryString.parse(location.search)
-if (query.clear === '1') {
-	wipeBrowserStorages()
+const query = queryString.parse(location.search);
+if (query.clear === "1") {
+	wipeBrowserStorages();
 }
 
 export default {
-	name: 'Login',
+	name: "Login",
 
 	components: {
 		LoginForm,
@@ -127,37 +133,47 @@ export default {
 	data() {
 		return {
 			loading: false,
-			user: loadState('core', 'loginUsername', ''),
+			user: loadState("core", "loginUsername", ""),
 			passwordlessLogin: false,
 			resetPassword: false,
-
+			headlineText: t(
+				"core",
+				"Log in to {productName}",
+				{ productName: OC.theme.name },
+				undefined,
+				{ sanitize: false, escape: false }
+			),
 			// Initial data
-			errors: loadState('core', 'loginErrors', []),
-			messages: loadState('core', 'loginMessages', []),
-			redirectUrl: loadState('core', 'loginRedirectUrl', false),
-			throttleDelay: loadState('core', 'loginThrottleDelay', 0),
-			canResetPassword: loadState('core', 'loginCanResetPassword', false),
-			resetPasswordLink: loadState('core', 'loginResetPasswordLink', ''),
-			autoCompleteAllowed: loadState('core', 'loginAutocomplete', true),
-			resetPasswordTarget: loadState('core', 'resetPasswordTarget', ''),
-			resetPasswordUser: loadState('core', 'resetPasswordUser', ''),
-			directLogin: query.direct === '1',
-			hasPasswordless: loadState('core', 'webauthn-available', false),
-			countAlternativeLogins: loadState('core', 'countAlternativeLogins', false),
-			alternativeLogins: loadState('core', 'alternativeLogins', []),
-			isHttps: window.location.protocol === 'https:',
-			isLocalhost: window.location.hostname === 'localhost',
-			hideLoginForm: loadState('core', 'hideLoginForm', false),
-			emailStates: loadState('core', 'emailStates', []),
-		}
+			errors: loadState("core", "loginErrors", []),
+			messages: loadState("core", "loginMessages", []),
+			redirectUrl: loadState("core", "loginRedirectUrl", false),
+			throttleDelay: loadState("core", "loginThrottleDelay", 0),
+			canResetPassword: loadState("core", "loginCanResetPassword", false),
+			resetPasswordLink: loadState("core", "loginResetPasswordLink", ""),
+			autoCompleteAllowed: loadState("core", "loginAutocomplete", true),
+			resetPasswordTarget: loadState("core", "resetPasswordTarget", ""),
+			resetPasswordUser: loadState("core", "resetPasswordUser", ""),
+			directLogin: query.direct === "1",
+			hasPasswordless: loadState("core", "webauthn-available", false),
+			countAlternativeLogins: loadState(
+				"core",
+				"countAlternativeLogins",
+				false
+			),
+			alternativeLogins: loadState("core", "alternativeLogins", []),
+			isHttps: window.location.protocol === "https:",
+			isLocalhost: window.location.hostname === "localhost",
+			hideLoginForm: loadState("core", "hideLoginForm", false),
+			emailStates: loadState("core", "emailStates", []),
+		};
 	},
 
 	methods: {
 		passwordResetFinished() {
-			window.location.href = generateUrl('login')
+			window.location.href = generateUrl("login");
 		},
 	},
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -179,8 +195,9 @@ export default {
 	}
 }
 
-.fade-enter-active, .fade-leave-active {
-	transition: opacity .3s;
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s;
 }
 
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
