@@ -4,20 +4,20 @@
  - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Elyerr Cloud (Custom Fork of Nextcloud) ☁
+# Astian Cloud ☁
 
 [![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/server)](https://api.reuse.software/info/github.com/nextcloud/server)
 [![codecov](https://codecov.io/gh/nextcloud/server/branch/master/graph/badge.svg)](https://codecov.io/gh/nextcloud/server)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/209/badge)](https://bestpractices.coreinfrastructure.org/projects/209)
 [![Design](https://contribute.design/api/shield/nextcloud/server)](https://contribute.design/nextcloud/server)
 
-**Elyerr Cloud** is a customized version of the Nextcloud Server, designed to integrate with centralized authentication systems via OAuth2, while maintaining full compatibility with the AGPL-3.0 license and credits to the original project.
+**Astian Cloud** is a customized version of the Nextcloud Server, designed to integrate with centralized authentication systems via OAuth2, while maintaining full compatibility with the AGPL-3.0 license and credits to the original project.
 
 ---
 
 ## ℹ️ About this version
 
-This fork has been **adapted and extended** specifically to work with [`oauth2-passport-server`](https://github.com/elyerr/oauth2-passport-server), enabling an advanced federated authentication and service-based access control system.
+This fork has been **adapted and extended** specifically to work with [`Astian Account`](https://github.com/goastian/astian-account), enabling an advanced federated authentication and service-based access control system.
 
 It is ideal for environments that require:
 
@@ -31,7 +31,7 @@ This version **explicitly requires** the [`user_oidc`](https://github.com/elyerr
 
 Additionally, to properly establish a session through federated login, an OAuth2-compliant server is required:
 
--   [`oauth2-passport-server`](https://github.com/elyerr/oauth2-passport-server) (**recommended**) that implements standard OpenID Connect flows.
+-   [`Astian Account`](https://github.com/goastian/astian-account) (**recommended**) that implements standard OpenID Connect flows.
 
 ### 🛠 Required Configuration
 
