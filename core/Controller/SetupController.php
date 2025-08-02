@@ -35,9 +35,9 @@ class SetupController {
 		$opts = $this->setupHelper->getSystemInfo();
 
 		// convert 'abcpassword' to 'abcpass'
-		if (isset($post['adminpassword'])) {
-			$post['adminpass'] = $post['adminpassword'];
-		}
+		//if (isset($post['adminpassword'])) {
+		//	$post['adminpass'] = $post['adminpassword'];
+		//}
 		if (isset($post['dbpassword'])) {
 			$post['dbpass'] = $post['dbpassword'];
 		}
@@ -70,8 +70,8 @@ class SetupController {
 
 	public function display(array $post): void {
 		$defaults = [
-			'adminlogin' => '',
-			'adminpass' => '',
+			//'adminlogin' => '',
+			//'adminpass' => '',
 			'dbuser' => '',
 			'dbpass' => '',
 			'dbname' => '',
@@ -94,7 +94,7 @@ class SetupController {
 		$this->initialStateService->provideInitialState('core', 'config', $parameters);
 		$this->initialStateService->provideInitialState('core', 'data', false);
 		$this->initialStateService->provideInitialState('core', 'links', [
-			'adminInstall' => $this->urlGenerator->linkToDocs('admin-install'),
+			//'adminInstall' => $this->urlGenerator->linkToDocs('admin-install'),
 			'adminSourceInstall' => $this->urlGenerator->linkToDocs('admin-source_install'),
 			'adminDBConfiguration' => $this->urlGenerator->linkToDocs('admin-db-configuration'),
 		]);
@@ -130,9 +130,9 @@ class SetupController {
 
 		$dbIsSet = isset($post['dbtype']);
 		$directoryIsSet = isset($post['directory']);
-		$adminAccountIsSet = isset($post['adminlogin']);
+		//$adminAccountIsSet = isset($post['adminlogin']);
 
-		if ($dbIsSet and $directoryIsSet and $adminAccountIsSet) {
+		if ($dbIsSet and $directoryIsSet) {
 			$post['install'] = 'true';
 		}
 

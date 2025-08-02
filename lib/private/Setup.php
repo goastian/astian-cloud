@@ -304,7 +304,7 @@ class Setup {
 		$error = [];
 		$dbType = $options['dbtype'];
 
-		$disableAdminUser = (bool)($options['admindisable'] ?? false);
+		/*$disableAdminUser = (bool)($options['admindisable'] ?? false);
 
 		if (!$disableAdminUser) {
 			if (empty($options['adminlogin'])) {
@@ -313,7 +313,7 @@ class Setup {
 			if (empty($options['adminpass'])) {
 				$error[] = $l->t('Set an admin password.');
 			}
-		}
+		}*/
 		if (empty($options['directory'])) {
 			$options['directory'] = \OC::$SERVERROOT . '/data';
 		}
@@ -407,8 +407,8 @@ class Setup {
 			return $error;
 		}
 
-		$user = null;
-		if (!$disableAdminUser) {
+		//$user = null;
+		/*if (!$disableAdminUser) {
 			$username = htmlspecialchars_decode($options['adminlogin']);
 			$password = htmlspecialchars_decode($options['adminpass']);
 			$this->outputDebug($output, 'Create admin account');
@@ -423,8 +423,8 @@ class Setup {
 				$error[] = $exception->getMessage();
 				return $error;
 			}
-		}
-
+		}*/
+		
 		$config = Server::get(IConfig::class);
 		$config->setAppValue('core', 'installedat', (string)microtime(true));
 		$appConfig = Server::get(IAppConfig::class);
@@ -436,11 +436,11 @@ class Setup {
 			$config->setSystemValue('updater.release.channel', $vendorData['channel']);
 		}
 
-		$group = Server::get(IGroupManager::class)->createGroup('admin');
-		if ($user !== null && $group instanceof IGroup) {
+		Server::get(IGroupManager::class)->createGroup('admin');
+		/*if ($user !== null && $group instanceof IGroup) {
 			$group->addUser($user);
-		}
-
+		}*/
+		
 		// Install shipped apps and specified app bundles
 		$this->outputDebug($output, 'Install default apps');
 		Installer::installShippedApps(false, $output);
@@ -469,29 +469,29 @@ class Setup {
 		$bootstrapCoordinator = Server::get(\OC\AppFramework\Bootstrap\Coordinator::class);
 		$bootstrapCoordinator->runInitialRegistration();
 
-		if (!$disableAdminUser) {
-			// Create a session token for the newly created user
-			// The token provider requires a working db, so it's not injected on setup
-			/** @var \OC\User\Session $userSession */
-			$userSession = Server::get(IUserSession::class);
-			$provider = Server::get(PublicKeyTokenProvider::class);
-			$userSession->setTokenProvider($provider);
-			$userSession->login($username, $password);
-			$user = $userSession->getUser();
-			if (!$user) {
-				$error[] = 'No account found in session.';
-				return $error;
-			}
-			$userSession->createSessionToken($request, $user->getUID(), $username, $password);
+		/*if (!$disableAdminUser) {
+		   // Create a session token for the newly created user
+		   // The token provider requires a working db, so it's not injected on setup
+		   // @var \OC\User\Session $userSession 
+		   $userSession = Server::get(IUserSession::class);
+		   $provider = Server::get(PublicKeyTokenProvider::class);
+		   $userSession->setTokenProvider($provider);
+		   $userSession->login($username, $password);
+		   $user = $userSession->getUser();
+		   if (!$user) {
+			   $error[] = 'No account found in session.';
+			   return $error;
+		   }
+		   $userSession->createSessionToken($request, $user->getUID(), $username, $password);
 
-			$session = $userSession->getSession();
-			$session->set('last-password-confirm', Server::get(ITimeFactory::class)->getTime());
+		   $session = $userSession->getSession();
+		   $session->set('last-password-confirm', Server::get(ITimeFactory::class)->getTime());
 
-			// Set email for admin
-			if (!empty($options['adminemail'])) {
-				$user->setSystemEMailAddress($options['adminemail']);
-			}
-		}
+		   // Set email for admin
+		   if (!empty($options['adminemail'])) {
+			   $user->setSystemEMailAddress($options['adminemail']);
+		   }
+	   }*/
 
 		return $error;
 	}

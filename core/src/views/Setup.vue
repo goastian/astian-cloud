@@ -36,28 +36,26 @@
 		</NcNoteCard>
 
 		<!-- Admin creation -->
-		<fieldset class="setup-form__administration">
-			<legend>{{ t('core', 'Create administration account') }}</legend>
-
-			<!-- Username -->
-			<NcTextField v-model="config.adminlogin"
+		 <!--
+			<fieldset class="setup-form__administration">
+				<legend>{{ t('core', 'Create administration account') }}</legend>		 
+				<NcTextField v-model="config.adminlogin"
 				:label="t('core', 'Administration account name')"
 				data-cy-setup-form-field="adminlogin"
 				name="adminlogin"
 				required />
-
-			<!-- Password -->
-			<NcPasswordField v-model="config.adminpass"
+				
+			 
+				<NcPasswordField v-model="config.adminpass"
 				:label="t('core', 'Administration account password')"
 				data-cy-setup-form-field="adminpass"
 				name="adminpass"
-				required />
-
-			<!-- Password entropy -->
-			<NcNoteCard v-show="config.adminpass !== ''" :type="passwordHelperType">
-				{{ passwordHelperText }}
-			</NcNoteCard>
-		</fieldset>
+				required /> 
+				<NcNoteCard v-show="config.adminpass !== ''" :type="passwordHelperType">
+					{{ passwordHelperText }}
+				</NcNoteCard>
+			</fieldset>
+		-->
 
 		<!-- Autoconfig toggle -->
 		<details :open="!isValidAutoconfig" data-cy-setup-form-advanced-config>
